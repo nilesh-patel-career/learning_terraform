@@ -58,7 +58,7 @@ module "alb" {
 
 
 
-  target_groups = [
+  target_groups = {
       ex-instance = {
         name_prefix      = "blog"
         protocol         = "HTTP"
@@ -71,7 +71,7 @@ module "alb" {
           }  
         }  
       }
-    ]
+  }
 
   listeners = {
     http_tcp_listeners = {
