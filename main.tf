@@ -56,30 +56,6 @@ module "alb" {
   subnets           = module.blog.vpc.public_subnets
   security_groups   = module.blog.sg.security_group_id
 
-  # Security Group
-  security_group_ingress_rules = {
-    all_http = {
-      from_port   = 80
-      to_port     = 80
-      ip_protocol = "tcp"
-      description = "HTTP web traffic"
-      cidr_ipv4   = "0.0.0.0/0"
-    }
-    all_https = {
-      from_port   = 443
-      to_port     = 443
-      ip_protocol = "tcp"
-      description = "HTTPS web traffic"
-      cidr_ipv4   = "0.0.0.0/0"
-    }
-  }
-  security_group_egress_rules = {
-    all = {
-      ip_protocol = "-1"
-      cidr_ipv4   = "10.0.0.0/16"
-    }
-  }
-
   listeners = {
     ex-http-https-redirect = {
       port     = 80
@@ -98,6 +74,7 @@ module "alb" {
       protocol         = "HTTP"
       port             = 80
       target_type      = "instance"
+    }
       targets = {
         my target = {
           target_id = aws_instance.blog.id
@@ -105,7 +82,7 @@ module "alb" {
         }
       }
     }
-  }
+
 
   tags = {
     Environment = "dev"
