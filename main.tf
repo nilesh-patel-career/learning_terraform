@@ -22,12 +22,14 @@ resource "aws_instance" "web" {
   ami           = data.aws_ami.app_ami.id
   instance_type = var.instance_type
 
+/* Assign ID of module defined security group, from module output, to the instance */
   vpc_security_group_ids = [module.blog_sg.security_group_id]
 
   tags = {
     Name = "HelloWorld"
   }
 }
+/* Module defined security group */
 
 module "blog_sg" {
   source  = "terraform-aws-modules/security-group/aws"
@@ -44,6 +46,7 @@ module "blog_sg" {
 
 }
 
+/* Manually defined Security Group (that is replaced by module defined security group above)
 
 resource "aws_security_group" "blog" {
   name = "blog"
@@ -79,3 +82,4 @@ resource "aws_security_group_rule" "blog_https_in" {
   
   security_group_id = aws_security_group.blog.id
   }
+  */
